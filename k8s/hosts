@@ -1,0 +1,10 @@
+[masters]
+master ansible_host=172.31.40.31 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/highservers.pem
+
+[workers]
+worker1 ansible_host=172.31.43.20 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/highservers.pem
+worker2 ansible_host=172.31.92.215 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/highservers.pem
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+

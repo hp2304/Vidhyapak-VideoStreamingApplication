@@ -1,0 +1,1 @@
+kubectl delete -f authentication-deployment.yaml -f userinfo-deployment.yaml -f videoupload-deployment.yaml -f streaming-deployment.yaml -f videoprocessing-deployment.yaml -f userinterface-deployment.yaml

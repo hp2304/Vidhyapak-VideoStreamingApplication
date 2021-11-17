@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userinfo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: userinformation
+  template:
+    metadata:
+      labels:
+        app: userinformation
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - userinformation
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - env:
+        - name: databaseIP
+          value: 172.31.35.190
+        - name: discoveryIP
+          value: 123.2.3.1
+        - name: redisIP
+          value: 172.31.89.220
+        image: hp2304/vidhyapak:userinformation
+        imagePullPolicy: Always
+        name: userinfo
+---
+apiVersion: v1
+kind: Service
+metadata:  
+  name: userinformation-service
+spec:
+  selector:    
+    app: userinformation
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

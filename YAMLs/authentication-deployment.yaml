@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: authentication
+  template:
+    metadata:
+      labels:
+        app: authentication
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - authentication
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - env:
+        - name: databaseIP
+          value: 172.31.35.190
+        - name: redisIP
+          value: 172.31.89.220
+        image: hp2304/vidhyapak:authentication
+        imagePullPolicy: Always
+        name: authentication
+---
+apiVersion: v1
+kind: Service
+metadata:  
+  name: auth-service
+spec:
+  selector:    
+    app: authentication
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+

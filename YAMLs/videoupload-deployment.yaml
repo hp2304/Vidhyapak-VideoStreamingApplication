@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: upload
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: videoupload
+  template:
+    metadata:
+      labels:
+        app: videoupload
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - videoupload
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - env:
+        - name: databaseIP
+          value: 172.31.35.190
+        - name: redisIP
+          value: 172.31.89.220
+        image: hp2304/vidhyapak:videoupload
+        imagePullPolicy: Always
+        name: videoupload
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /mnt
+          name: nfs-mount
+      volumes:
+      - name: nfs-mount
+        hostPath:
+          path: /mnt
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: videoupload-service
+spec:
+  selector:
+    app: videoupload  
+  ports:
+    - protocol: TCP
+      port: 80
+      nodePort: 31001
+  type: NodePort

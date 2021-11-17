@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streaming
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: streaming
+  template:
+    metadata:
+      labels:
+        app: streaming
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - streaming
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - env:
+        - name: databaseIP
+          value: 172.31.35.190
+        - name: redisIP
+          value: 172.31.89.220
+        image: hp2304/vidhyapak:streaming
+        imagePullPolicy: Always
+        name: streaming
+        volumeMounts:
+        - mountPath: /mnt
+          name: nfs-mount
+      volumes:
+      - name: nfs-mount
+        hostPath:
+          path: /mnt
+          type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streaming-service
+spec:
+  selector:
+    app: streaming
+  ports:
+    - protocol: TCP
+      port: 80
+      nodePort: 32001
+  type: NodePort

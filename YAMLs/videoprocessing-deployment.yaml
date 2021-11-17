@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: processing
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: videoprocessing
+  template:
+    metadata:
+      labels:
+        app: videoprocessing
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - videoprocessing
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - image: hp2304/vidhyapak:videoprocessing
+          imagePullPolicy: Always
+          name: videoprocessing
+          volumeMounts:
+            - mountPath: /mnt
+              name: nfs-mount
+      volumes:
+      - name: nfs-mount
+        hostPath:
+          path: /mnt
+          type: Directory
