@@ -1,6 +1,6 @@
 # Final Year Project K8s Set-Up (Video Streaming System/WebApp: Vidhyapak)
 
-1. JAR for all microservices are in their respective directory.
+1. JAR for each microservice is in it's respective directory.
 2. These directories also contain it's corresponding *Dockerfile* to containerize the same.
 
 ### Deployment Part
