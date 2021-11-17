@@ -18,4 +18,4 @@ This application is made in such a way that it is scalable, reliable and secure.
 
 > Further find more details about the project in Report.pdf. 
 
-> This is the forked version of my project partner's [repo](https://github.com/hetjagani/Vidhyapak-VideoStreamingApplication), I have added some helper files about how to setup the same on Kubernetes cluster instead of docker-compose.
+> This is the forked version of my project partner's [repo](https://github.com/hetjagani/Vidhyapak-VideoStreamingApplication), I have added some helper files about how to setup the same on Kubernetes cluster instead of docker-compose (Look at [k8s_setup.md](k8s_setup.md)).
