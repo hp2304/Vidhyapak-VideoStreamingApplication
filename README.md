@@ -17,3 +17,5 @@ This application is made in such a way that it is scalable, reliable and secure.
 * Also one can run `docker-compose up` in the Services directory. The docker-compose.yml file is present in Services directory. But before that one has to build the images for each microservices. The commands to build those images are given in `docker_build.txt`.
 
 > Further find more details about the project in Report.pdf. 
+
+> This is the forked version of my project partner's [repo](https://github.com/hetjagani/Vidhyapak-VideoStreamingApplication), I have added some helper files about how to setup the same on Kubernetes cluster instead of docker-compose.
